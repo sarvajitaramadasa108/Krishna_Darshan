@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { loadMagazineIssue } from "@/lib/magazine-data";
+import EventImageCarousel from "@/components/event-image-carousel";
 
 export const dynamic = "force-dynamic";
 
@@ -19,40 +20,6 @@ function youtubeEmbedUrl(url?: string | null) {
   } catch {
     return null;
   }
-}
-
-function EventImageCarousel({
-  images,
-}: {
-  images: Array<{ url: string }>;
-}) {
-  if (!images.length) {
-    return (
-      <div className="rounded-[1.75rem] border border-white/70 bg-white/65 p-6 text-sm text-[#6f5a46] shadow-[0_16px_40px_rgba(86,48,18,0.08)]">
-        Add event images in Supabase to show the carousel here.
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2">
-      {images.map((image, index) => (
-        <div
-          key={`${image.url}-${index}`}
-          className="min-w-[84%] snap-start overflow-hidden rounded-[1.5rem] border border-white/70 bg-white/80 shadow-[0_18px_48px_rgba(86,48,18,0.12)] sm:min-w-[56%] lg:min-w-[38%]"
-        >
-          <Image
-            src={image.url}
-            alt="Event image"
-            width={1200}
-            height={900}
-            sizes="(max-width: 640px) 84vw, (max-width: 1024px) 56vw, 38vw"
-            className="h-[240px] w-full object-cover sm:h-[320px]"
-          />
-        </div>
-      ))}
-    </div>
-  );
 }
 
 export default async function Home() {
@@ -173,9 +140,6 @@ export default async function Home() {
                         <h3 className="font-serif-display text-3xl font-semibold leading-tight text-[#25150d]">
                           {event.title}
                         </h3>
-                        <p className="mt-2 text-sm leading-6 text-justify text-[#645042]">
-                          {event.summary}
-                        </p>
                         <p className="mt-2 text-sm font-semibold text-[#7f3a24]">
                           Click Here for more details
                         </p>
@@ -217,7 +181,7 @@ export default async function Home() {
                         {event.title}
                       </h3>
 
-                      <p className="mt-4 text-base leading-8 text-[#5e4a39]">
+                      <p className="mt-4 text-justify text-base leading-8 text-[#5e4a39]">
                         {event.summary}
                       </p>
 
