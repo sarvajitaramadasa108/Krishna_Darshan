@@ -58,6 +58,10 @@ export default async function Home() {
                 {currentIssue.theme}
               </h2>
             </div>
+            <div className="inline-flex flex-wrap gap-2 rounded-full border border-[#ead9bc] bg-white/75 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#7f3a24]">
+              <span>{currentIssue.source === "supabase" ? "Supabase connected" : "Template fallback"}</span>
+              <span className="normal-case tracking-normal">{currentIssue.note}</span>
+            </div>
             <p className="max-w-2xl text-base leading-8 text-[#5e4a39] sm:text-lg">
               {currentIssue.intro}
             </p>

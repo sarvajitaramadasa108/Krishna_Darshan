@@ -64,7 +64,12 @@ function videoIdFromUrl(url: string | null) {
 
 export type MagazineIssueData = typeof currentIssue;
 
-export async function loadMagazineIssue(): Promise<MagazineIssueData> {
+export type MagazineIssueResult = MagazineIssueData & {
+  source: "supabase" | "template";
+  note: string;
+};
+
+export async function loadMagazineIssue(): Promise<MagazineIssueResult> {
   try {
     const issues = await supabaseSelect<IssueRow>(
       "issues",
@@ -75,7 +80,11 @@ export async function loadMagazineIssue(): Promise<MagazineIssueData> {
     );
 
     if (!issues?.length) {
-      return currentIssue;
+      return {
+        ...currentIssue,
+        source: "template",
+        note: "No Supabase issue rows were found.",
+      };
     }
 
     const issue = issues[0];
@@ -186,8 +195,14 @@ export async function loadMagazineIssue(): Promise<MagazineIssueData> {
       videos: videos.length ? videos : currentIssue.videos,
       upcoming: upcoming.length ? upcoming : currentIssue.upcoming,
       archive: archive.length ? archive : currentIssue.archive,
+      source: "supabase",
+      note: `Loaded ${events.length} event(s) from Supabase.`,
     };
   } catch {
-    return currentIssue;
+    return {
+      ...currentIssue,
+      source: "template",
+      note: "Supabase read failed, so the template fallback is showing.",
+    };
   }
 }

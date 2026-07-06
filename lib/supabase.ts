@@ -36,12 +36,12 @@ async function supabaseSelect<T extends SupabaseRow>(
   const response = await fetch(
     `${config.url}/rest/v1/${table}?${searchParams.toString()}`,
     {
+      cache: "no-store",
       headers: {
         apikey: config.anonKey,
         Authorization: `Bearer ${config.anonKey}`,
         Accept: "application/json",
       },
-      next: { revalidate: 60 },
     }
   );
 

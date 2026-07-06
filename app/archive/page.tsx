@@ -19,6 +19,11 @@ export default async function ArchivePage() {
               <h1 className="mt-2 font-serif-display text-4xl font-semibold text-[#24150d]">
                 Previous issues and archived PDFs
               </h1>
+              <p className="mt-3 text-sm font-medium text-[#7f3a24]">
+                {currentIssue.source === "supabase"
+                  ? `Supabase connected: ${currentIssue.note}`
+                  : currentIssue.note}
+              </p>
             </div>
             <Link
               href="/"
