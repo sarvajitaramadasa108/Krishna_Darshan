@@ -14,9 +14,9 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Krishna Darshan",
+  title: "Krishna Darshan | June 2026",
   description:
-    "A mobile-responsive monthly magazine for Hare Krishna Vaikuntham Temple, with stories, galleries, video embeds, and PDF archives.",
+    "A web-first monthly magazine for Hare Krishna Vaikuntham Temple, with stories, galleries, video embeds, and PDF archives.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

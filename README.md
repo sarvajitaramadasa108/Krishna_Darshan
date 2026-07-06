@@ -1,8 +1,8 @@
 # Krishna Darshan
 
 Krishna Darshan is a mobile-responsive monthly magazine site for Hare Krishna
-Vaikuntham Temple. The current build focuses on an editorial web edition for
-the latest month, while previous months stay available as PDF archive links.
+Vaikuntham Temple. The current build focuses on a June 2026 web edition, while
+May and earlier issues stay available as PDF archive links.
 
 ## What is included
 

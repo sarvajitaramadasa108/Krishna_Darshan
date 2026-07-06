@@ -1,9 +1,20 @@
-export type MagazineSection = {
+export type ContentsItem = {
+  label: string;
+  href: string;
+};
+
+export type IssueMetric = {
+  label: string;
+  value: string;
+  note: string;
+};
+
+export type StoryCard = {
   eyebrow: string;
   title: string;
   body: string;
-  accent: string;
-  bullets?: string[];
+  highlight: string;
+  metrics: string[];
 };
 
 export type GalleryItem = {
@@ -19,6 +30,13 @@ export type VideoItem = {
   source: string;
 };
 
+export type EventItem = {
+  date: string;
+  title: string;
+  body: string;
+  tag: string;
+};
+
 export type ArchiveIssue = {
   month: string;
   title: string;
@@ -27,129 +45,157 @@ export type ArchiveIssue = {
 };
 
 export const currentIssue = {
-  month: "July 2026",
+  month: "June 2026",
   title: "Krishna Darshan",
-  theme: "The Temple as a Living Festival",
+  theme: "A web-first monthly issue",
   intro:
-    "This month’s edition celebrates the many ways devotion becomes visible: the rhythm of the morning arati, the energy of outreach, the quiet beauty of seva, and the shared joy of festivals that bring the community together.",
-  coverStat: [
-    { label: "Feature stories", value: "06" },
-    { label: "Photo spreads", value: "14" },
-    { label: "Video moments", value: "03" },
-  ],
-  sections: [
+    "From June onward, Krishna Darshan becomes a living magazine page instead of a PDF wrapper. Each section can hold event stories, statistics, galleries, videos, and links that are easy to update month after month.",
+  contents: [
+    { label: "Editorial note", href: "#editorial-note" },
+    { label: "Issue at a glance", href: "#issue-at-a-glance" },
+    { label: "Feature stories", href: "#feature-stories" },
+    { label: "Gallery", href: "#gallery" },
+    { label: "Video moments", href: "#videos" },
+    { label: "Upcoming events", href: "#upcoming-events" },
+  ] satisfies ContentsItem[],
+  metrics: [
     {
-      eyebrow: "Editor’s Note",
-      title: "A monthly glimpse into bhakti in action",
-      body:
-        "Krishna Darshan is designed as a living magazine. Instead of only showing the final PDF, it lets readers flow through stories, visuals, and media with a better experience on phones and tablets.",
-      accent: "The temple’s monthly heartbeat, made scrollable.",
-      bullets: [
-        "Festival coverage with clear section breaks",
-        "Outreach and service stories presented as cards",
-        "Embedded YouTube videos for talks and celebrations",
-      ],
+      label: "Story slots",
+      value: "06",
+      note: "Event-by-event sections ready for June content",
     },
     {
-      eyebrow: "This Month",
-      title: "Festivals, outreach, and service highlights",
-      body:
-        "The page is organized to mirror the magazine structure: a strong opening, a few vivid narrative sections, then a clean archive path for prior PDFs.",
-      accent: "Built to feel editorial, not like a file dump.",
-      bullets: [
-        "Hero section for the main theme",
-        "Archive links for previous printed issues",
-        "A simple future-ready content model",
-      ],
+      label: "Media slots",
+      value: "12",
+      note: "Photos, posters, and other visuals",
     },
     {
-      eyebrow: "For the Team",
-      title: "Easy to update every month",
-      body:
-        "The first version keeps the content in typed data so your team can publish quickly. Later, this can move into a free Supabase-backed admin flow without changing the visual system.",
-      accent: "Start simple, then add a CMS when ready.",
-      bullets: [
-        "Copy text into the data file",
-        "Swap in monthly photos and video links",
-        "Point archive buttons to Drive PDFs",
-      ],
+      label: "Video slots",
+      value: "03",
+      note: "YouTube embeds for festival or outreach clips",
     },
-  ] satisfies MagazineSection[],
+  ] satisfies IssueMetric[],
+  storyCards: [
+    {
+      eyebrow: "Festival highlight",
+      title: "Temple celebration, done as a story card",
+      body:
+        "Use this module for a specific June event, festival, or darshan moment. Add the date, a short narrative, and a few image captions so it feels like a proper magazine spread.",
+      highlight: "Best for a main June event with photos and stats.",
+      metrics: ["Attendance", "Program length", "Photo count"],
+    },
+    {
+      eyebrow: "Outreach report",
+      title: "Service activities and public response",
+      body:
+        "Use this block for book distribution, prasadam outreach, village programs, or any temple-facing initiative. Keep the copy short and let the visuals do the work.",
+      highlight: "Great for outreach stories and community impact.",
+      metrics: ["Books distributed", "Villages reached", "Volunteers"],
+    },
+    {
+      eyebrow: "Temple update",
+      title: "Construction, service, or leadership update",
+      body:
+        "This card is ideal for project updates, service reflections, or a note from the leadership team. It keeps the page balanced between story and context.",
+      highlight: "Useful for recurring monthly temple updates.",
+      metrics: ["Progress points", "Milestones", "Next steps"],
+    },
+  ] satisfies StoryCard[],
   gallery: [
     {
-      title: "Temple Altar",
-      caption: "A calm visual block for darshan and morning rituals.",
+      title: "Temple moments",
+      caption: "Replace this illustrated tile with a real June photo.",
       image: "/gallery-temple.svg",
     },
     {
-      title: "Festival Procession",
-      caption: "A bright frame for utsava moments and celebrations.",
+      title: "Festival color",
+      caption: "Use this space for celebration imagery or poster art.",
       image: "/gallery-festival.svg",
     },
     {
-      title: "Prasadam Service",
-      caption: "A warm card for service, distribution, and community care.",
+      title: "Prasadam service",
+      caption: "A clean block for service, distribution, or volunteer photos.",
       image: "/gallery-prasadam.svg",
     },
     {
-      title: "Youth Outreach",
-      caption: "A flexible panel for campus talks and outreach snapshots.",
+      title: "Outreach scene",
+      caption: "Good for campus talks, village preaching, or youth programs.",
       image: "/gallery-outreach.svg",
     },
   ] satisfies GalleryItem[],
   videos: [
     {
       title: "Temple walk-through",
-      description: "A walk-through video for first-time visitors and devotees.",
+      description: "A welcoming video for first-time visitors and devotees.",
       youtubeId: "LSidcoTTt4Y",
       source: "Hare Krishna Vaikuntham Temple",
     },
     {
-      title: "Janmashtami celebrations",
-      description: "Festival coverage that works beautifully inside the magazine page.",
+      title: "Festival highlights",
+      description: "Embed the strongest June celebration or program video here.",
       youtubeId: "iTACAd-ZH5M",
       source: "Hare Krishna Movement Visakhapatnam",
     },
     {
-      title: "Construction and growth updates",
-      description: "A progress video that shows the temple as a living, growing project.",
+      title: "Project update",
+      description: "Use this slot for a construction or service progress clip.",
       youtubeId: "XEl4y0dfz7g",
       source: "Hare Krishna Movement Visakhapatnam",
     },
   ] satisfies VideoItem[],
-  archive: [
+  upcoming: [
     {
-      month: "June 2026",
-      title: "Service in Motion",
-      summary: "Outreach stories, prasadam service, and temple updates.",
-      pdfUrl: "https://drive.google.com/drive/folders/replace-with-june-2026-pdf",
+      date: "June 17",
+      title: "Prana Pratishtha ceremony",
+      body:
+        "Use this section for the next major temple program, invitation, and schedule details.",
+      tag: "Invitation",
     },
+    {
+      date: "June 27",
+      title: "Bhajan evening",
+      body:
+        "A good place for musical events, devotional gatherings, or ticketed spiritual programs.",
+      tag: "Event",
+    },
+    {
+      date: "June 27",
+      title: "Panihati Chida Dahi festival",
+      body:
+        "This slot works well for celebration details, arati, skit, and prasadam notes.",
+      tag: "Festival",
+    },
+  ] satisfies EventItem[],
+  archive: [
     {
       month: "May 2026",
       title: "Festival Season",
-      summary: "A print-style recap of festivals, kirtans, and community seva.",
-      pdfUrl: "https://drive.google.com/drive/folders/replace-with-may-2026-pdf",
+      summary: "The previous print issue, kept as a PDF archive link.",
+      pdfUrl:
+        "https://drive.google.com/file/d/1GhNtiCi6YF8WUbuMgncryYst0xAp_IKY/view?usp=drive_link",
     },
     {
       month: "April 2026",
       title: "Bhakti Calendar",
-      summary: "A month of spiritual programs and temple activity highlights.",
+      summary: "Another archived month can be added here as a PDF later.",
       pdfUrl: "https://drive.google.com/drive/folders/replace-with-april-2026-pdf",
     },
     {
       month: "March 2026",
       title: "Temple Life",
-      summary: "The earlier issue archive for easy download and sharing.",
+      summary: "Older print issues can remain as downloadable PDFs.",
       pdfUrl: "https://drive.google.com/drive/folders/replace-with-march-2026-pdf",
     },
   ] satisfies ArchiveIssue[],
 };
 
 export const issueNavigation = [
-  { label: "Editor’s note", href: "#editors-note" },
-  { label: "Highlights", href: "#highlights" },
+  { label: "Editorial note", href: "#editorial-note" },
+  { label: "At a glance", href: "#issue-at-a-glance" },
+  { label: "Stories", href: "#feature-stories" },
   { label: "Gallery", href: "#gallery" },
   { label: "Videos", href: "#videos" },
+  { label: "Events", href: "#upcoming-events" },
   { label: "Archive", href: "/archive" },
 ];
 

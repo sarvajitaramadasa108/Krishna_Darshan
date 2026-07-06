@@ -44,7 +44,7 @@ export default function Home() {
         <section className="grid items-center gap-8 py-8 lg:grid-cols-[1.05fr_0.95fr] lg:py-12">
           <div className="fade-up space-y-6">
             <p className="inline-flex items-center rounded-full border border-[#e0c8a6] bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.32em] text-[#a2522f]">
-              Monthly magazine, interactive edition
+              Web-first magazine edition
             </p>
             <div className="space-y-4">
               <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#907457]">
@@ -60,29 +60,32 @@ export default function Home() {
 
             <div className="flex flex-wrap gap-3">
               <Link
-                href="#editors-note"
+                href="#editorial-note"
                 className="rounded-full bg-[#7f3a24] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[#7f3a24]/20 transition hover:-translate-y-0.5 hover:bg-[#6f3120]"
               >
-                Read this issue
+                Start reading
               </Link>
               <Link
                 href={archivePath}
                 className="rounded-full border border-[#d8c3a4] bg-white/75 px-5 py-3 text-sm font-semibold text-[#5e4633] transition hover:border-[#b85c38] hover:text-[#7f3a24]"
               >
-                Open archive
+                Previous issues
               </Link>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
-              {currentIssue.coverStat.map((stat, index) => (
+              {currentIssue.metrics.map((metric, index) => (
                 <article
-                  key={stat.label}
+                  key={metric.label}
                   className={`magazine-card rounded-3xl p-4 fade-up delay-${index + 1}`}
                 >
                   <p className="text-3xl font-semibold text-[#2d1a10]">
-                    {stat.value}
+                    {metric.value}
                   </p>
-                  <p className="mt-1 text-sm text-[#6d5844]">{stat.label}</p>
+                  <p className="mt-1 text-sm text-[#6d5844]">{metric.label}</p>
+                  <p className="mt-2 text-xs leading-5 text-[#8c745f]">
+                    {metric.note}
+                  </p>
                 </article>
               ))}
             </div>
@@ -97,7 +100,7 @@ export default function Home() {
                 <div className="overflow-hidden rounded-[1.75rem] border border-white/70 bg-[#fff9f0]">
                   <Image
                     src="/cover-illustration.svg"
-                    alt="Illustrated cover for Krishna Darshan"
+                    alt="Illustrated Krishna Darshan cover"
                     width={1400}
                     height={1060}
                     className="h-full w-full object-cover"
@@ -106,24 +109,25 @@ export default function Home() {
                 <div className="grid gap-3 sm:grid-cols-2">
                   <article className="rounded-[1.5rem] border border-[#ead9bc] bg-white/80 p-4">
                     <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#a15b2f]">
-                      Featured story
+                      Editorial pattern
                     </p>
                     <h3 className="mt-2 font-serif-display text-3xl font-semibold text-[#28170d]">
-                      Temple life in motion
+                      Event by event, section by section
                     </h3>
                     <p className="mt-3 text-sm leading-6 text-[#66513f]">
-                      A visual, scroll-friendly issue page for festivals,
-                      outreach, and devotional service.
+                      Every June issue can hold festival reports, outreach
+                      coverage, stories with statistics, photos, and embedded
+                      media in one scrollable page.
                     </p>
                   </article>
                   <article className="rounded-[1.5rem] border border-[#ead9bc] bg-[#fff7ec] p-4">
                     <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#a15b2f]">
-                      Monthly flow
+                      This issue
                     </p>
                     <ul className="mt-3 space-y-2 text-sm text-[#664f3b]">
-                      <li>One page that feels like a magazine spread</li>
-                      <li>Archive links for older PDF editions</li>
-                      <li>Embedded video moments from YouTube</li>
+                      {currentIssue.contents.map((item) => (
+                        <li key={item.href}>{item.label}</li>
+                      ))}
                     </ul>
                   </article>
                 </div>
@@ -133,107 +137,142 @@ export default function Home() {
         </section>
 
         <section
-          id="editors-note"
-          className="grid gap-4 border-t border-[#ddc7a9] py-10 lg:grid-cols-3"
+          id="editorial-note"
+          className="grid gap-4 border-t border-[#ddc7a9] py-10 lg:grid-cols-[1.1fr_0.9fr]"
         >
-          {currentIssue.sections.map((section, index) => (
-            <article
-              key={section.title}
-              className={`magazine-card fade-up delay-${(index % 3) + 1} rounded-[1.75rem] p-6`}
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a15b2f]">
-                {section.eyebrow}
-              </p>
-              <h3 className="mt-3 font-serif-display text-3xl font-semibold leading-tight text-[#24150d]">
-                {section.title}
-              </h3>
-              <p className="mt-4 text-sm leading-7 text-[#645042]">
-                {section.body}
-              </p>
-              <div className="mt-5 rounded-2xl border border-[#ead9bc] bg-white/70 px-4 py-3 text-sm font-medium text-[#7f3a24]">
-                {section.accent}
-              </div>
-              {section.bullets ? (
-                <ul className="mt-5 space-y-2 text-sm leading-6 text-[#645042]">
-                  {section.bullets.map((bullet) => (
-                    <li key={bullet} className="flex gap-3">
-                      <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#d7a95a]" />
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-            </article>
-          ))}
-        </section>
-
-        <section
-          id="highlights"
-          className="grid gap-6 border-t border-[#ddc7a9] py-10 lg:grid-cols-[0.95fr_1.05fr]"
-        >
-          <article className="fade-up magazine-card rounded-[2rem] p-6">
+          <article className="magazine-card rounded-[2rem] p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a15b2f]">
-              Monthly Highlights
+              Editorial note
             </p>
             <h3 className="mt-3 font-serif-display text-4xl font-semibold text-[#24150d]">
-              Story blocks that guide the reader
+              The page is designed like a monthly magazine spread
             </h3>
-            <p className="mt-4 max-w-xl text-sm leading-7 text-[#645042]">
-              This structure is ideal for a newsletter that mixes text, photos,
-              and links. Each card can become a different section every month:
-              a festival recap, a seva story, a donation update, or a youth
-              program feature.
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-[#645042]">
+              This template mirrors the way the May issue was organized, but it
+              turns the flow into an interactive web page. The structure is now
+              ready for June stories, and you can drop in real event details,
+              photos, and links without redesigning the page each month.
             </p>
-
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {[
-                "Festival photo stories",
-                "Temple service highlights",
-                "Outreach and prasadam updates",
-                "Audio and video embeds",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="rounded-2xl border border-[#ead9bc] bg-[#fffaf1] px-4 py-4 text-sm font-medium text-[#5f4633]"
+              {currentIssue.contents.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="rounded-2xl border border-[#ead9bc] bg-[#fffaf1] px-4 py-4 text-sm font-medium text-[#5f4633] transition hover:border-[#b85c38] hover:text-[#7f3a24]"
                 >
-                  {item}
-                </div>
+                  {item.label}
+                </Link>
               ))}
             </div>
           </article>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <article className="magazine-card-strong rounded-[2rem] p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a15b2f]">
+              June issue format
+            </p>
+            <div className="mt-4 space-y-4 text-sm leading-7 text-[#645042]">
+              <p>
+                1. Opening editorial and monthly theme
+              </p>
+              <p>
+                2. Event-by-event story cards with stats
+              </p>
+              <p>
+                3. Gallery, videos, and press highlights
+              </p>
+              <p>
+                4. Upcoming events and archive links
+              </p>
+            </div>
+            <p className="mt-5 rounded-2xl border border-[#ead9bc] bg-white/70 px-4 py-4 text-sm leading-7 text-[#5f4633]">
+              As you send June content, we can replace these template cards with
+              real event names, speaker notes, attendance numbers, and media
+              links.
+            </p>
+          </article>
+        </section>
+
+        <section
+          id="issue-at-a-glance"
+          className="grid gap-4 border-t border-[#ddc7a9] py-10 lg:grid-cols-3"
+        >
+          {currentIssue.storyCards.map((card, index) => (
+            <article
+              key={card.title}
+              className={`magazine-card fade-up delay-${(index % 3) + 1} rounded-[1.75rem] p-6`}
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a15b2f]">
+                {card.eyebrow}
+              </p>
+              <h3 className="mt-3 font-serif-display text-3xl font-semibold leading-tight text-[#24150d]">
+                {card.title}
+              </h3>
+              <p className="mt-4 text-sm leading-7 text-[#645042]">
+                {card.body}
+              </p>
+              <div className="mt-5 rounded-2xl border border-[#ead9bc] bg-white/70 px-4 py-3 text-sm font-medium text-[#7f3a24]">
+                {card.highlight}
+              </div>
+              <ul className="mt-5 space-y-2 text-sm leading-6 text-[#645042]">
+                {card.metrics.map((metric) => (
+                  <li key={metric} className="flex gap-3">
+                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#d7a95a]" />
+                    <span>{metric}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </section>
+
+        <section id="feature-stories" className="border-t border-[#ddc7a9] py-10">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a15b2f]">
+                Feature stories
+              </p>
+              <h3 className="mt-3 font-serif-display text-4xl font-semibold text-[#24150d]">
+                June stories that can be filled month by month
+              </h3>
+            </div>
+            <p className="max-w-2xl text-sm leading-7 text-[#645042]">
+              Use these sections for the strongest June stories, whether they
+              are festivals, outreach, construction updates, or community
+              moments.
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-4 xl:grid-cols-3">
             {[
               {
-                title: "Festival rhythm",
-                text: "Use a bright visual block for Janmashtami, Radhashtami, Govardhan, or any month-specific celebration.",
+                title: "Story 01",
+                text: "Add the main June event here with date, summary, and a photo strip.",
               },
               {
-                title: "Community service",
-                text: "Feature book distribution, prasadam, youth outreach, and temple maintenance in clean cards.",
+                title: "Story 02",
+                text: "Use this slot for outreach, book distribution, or prasadam service.",
               },
               {
-                title: "Editorial depth",
-                text: "Add a short introduction from leadership and a closing note from the editorial team.",
-              },
-              {
-                title: "Print archive",
-                text: "Keep older editions as PDFs and only the current month as the rich web experience.",
+                title: "Story 03",
+                text: "A space for a leadership note, temple update, or special announcement.",
               },
             ].map((item, index) => (
               <article
                 key={item.title}
-                className={`magazine-card-strong fade-up delay-${(index % 3) + 1} rounded-[1.75rem] p-5`}
+                className={`fade-up delay-${(index % 3) + 1} overflow-hidden rounded-[1.75rem] border border-[#e2ccb0] bg-white/80 shadow-[0_16px_40px_rgba(86,48,18,0.12)]`}
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#a15b2f]">
-                  Highlight
-                </p>
-                <h4 className="mt-2 font-serif-display text-2xl font-semibold text-[#24150d]">
-                  {item.title}
-                </h4>
-                <p className="mt-3 text-sm leading-7 text-[#645042]">
-                  {item.text}
-                </p>
+                <div className="aspect-[4/3] bg-[linear-gradient(135deg,#d7a95a_0%,#f7e5c2_45%,#fff6e7_100%)]" />
+                <div className="p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#a15b2f]">
+                    June event slot
+                  </p>
+                  <h4 className="mt-2 font-serif-display text-2xl font-semibold text-[#24150d]">
+                    {item.title}
+                  </h4>
+                  <p className="mt-3 text-sm leading-6 text-[#645042]">
+                    {item.text}
+                  </p>
+                </div>
               </article>
             ))}
           </div>
@@ -243,16 +282,15 @@ export default function Home() {
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a15b2f]">
-                Devotional Gallery
+                Gallery
               </p>
               <h3 className="mt-3 font-serif-display text-4xl font-semibold text-[#24150d]">
-                Visual panels for photos and spreads
+                Use photo tiles for the strongest visual moments
               </h3>
             </div>
             <p className="max-w-2xl text-sm leading-7 text-[#645042]">
-              Replace the illustrated panels with your monthly temple photos
-              anytime. The grid already handles a photo-heavy, mobile-friendly
-              layout.
+              Replace these tiles with June photos, and the page immediately
+              feels like a magazine instead of a PDF upload.
             </p>
           </div>
 
@@ -284,17 +322,14 @@ export default function Home() {
           </div>
         </section>
 
-        <section
-          id="videos"
-          className="border-t border-[#ddc7a9] py-10"
-        >
+        <section id="videos" className="border-t border-[#ddc7a9] py-10">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a15b2f]">
-                Watch and Listen
+                Video moments
               </p>
               <h3 className="mt-3 font-serif-display text-4xl font-semibold text-[#24150d]">
-                Bring YouTube straight into the issue
+                Add embedded YouTube videos where they matter most
               </h3>
             </div>
             <Link
@@ -303,7 +338,7 @@ export default function Home() {
               rel="noreferrer"
               className="inline-flex w-fit items-center rounded-full border border-[#d8c3a4] bg-white/80 px-4 py-2 text-sm font-semibold text-[#5e4633] transition hover:border-[#b85c38] hover:text-[#7f3a24]"
             >
-              Open the temple channel
+              Temple channel
             </Link>
           </div>
 
@@ -339,6 +374,48 @@ export default function Home() {
           </div>
         </section>
 
+        <section
+          id="upcoming-events"
+          className="border-t border-[#ddc7a9] py-10"
+        >
+          <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <article className="magazine-card rounded-[2rem] p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a15b2f]">
+                Upcoming events
+              </p>
+              <h3 className="mt-3 font-serif-display text-4xl font-semibold text-[#24150d]">
+                A dedicated space for dates, invitations, and calls to action
+              </h3>
+              <p className="mt-4 text-sm leading-7 text-[#645042]">
+                These cards work for the events section from the May issue and
+                can be replaced every month without changing the layout.
+              </p>
+            </article>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {currentIssue.upcoming.map((event, index) => (
+                <article
+                  key={`${event.date}-${event.title}`}
+                  className={`magazine-card-strong fade-up delay-${(index % 3) + 1} rounded-[1.5rem] p-5`}
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#a15b2f]">
+                    {event.tag}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-[#7f3a24]">
+                    {event.date}
+                  </p>
+                  <h4 className="mt-2 font-serif-display text-2xl font-semibold text-[#24150d]">
+                    {event.title}
+                  </h4>
+                  <p className="mt-3 text-sm leading-6 text-[#645042]">
+                    {event.body}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="border-t border-[#ddc7a9] py-10">
           <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
             <article className="magazine-card rounded-[2rem] p-6">
@@ -346,38 +423,37 @@ export default function Home() {
                 Free publishing flow
               </p>
               <h3 className="mt-3 font-serif-display text-4xl font-semibold text-[#24150d]">
-                A simple structure for every month
+                Ready for monthly updates
               </h3>
               <p className="mt-4 text-sm leading-7 text-[#645042]">
-                The fastest free approach is to keep the current issue in this
-                web page, store your images in a free file bucket or directly in
-                the repo for small assets, and keep the older months as PDF
-                archives in Google Drive.
+                Keep June and onward as a website, then store older print issues
+                as PDF archive links. Later, we can move the issue data into
+                Supabase so your team can update stories without touching code.
               </p>
               <p className="mt-4 rounded-2xl border border-[#ead9bc] bg-[#fffaf1] px-4 py-4 text-sm leading-7 text-[#5f4633]">
-                When you are ready for a database, this same layout can move to
-                a free Supabase table for issue metadata and a storage bucket
-                for photos. The front-end does not need to change much.
+                Next step: send the real June event details, photo links, and
+                videos, and I’ll swap the placeholders into a publish-ready
+                issue page.
               </p>
             </article>
 
             <div className="grid gap-4 sm:grid-cols-2">
               {[
                 {
-                  title: "Current month",
-                  text: "Web story with sections, photos, and videos.",
+                  title: "June issue",
+                  text: "Web-first magazine with stories, media, and events.",
                 },
                 {
-                  title: "Older months",
-                  text: "Keep these as PDF downloads in an archive page.",
+                  title: "May archive",
+                  text: "Previous PDF issue linked from the archive page.",
                 },
                 {
-                  title: "Images",
-                  text: "Use a free storage bucket or static public assets.",
+                  title: "Supabase ready",
+                  text: "Can hold issue metadata and asset links later.",
                 },
                 {
-                  title: "Data",
-                  text: "Keep issue metadata in a typed content file or Supabase table.",
+                  title: "Vercel ready",
+                  text: "Can deploy as soon as the repository is connected.",
                 },
               ].map((item, index) => (
                 <article
@@ -398,9 +474,7 @@ export default function Home() {
 
         <footer className="border-t border-[#ddc7a9] pt-6 text-sm text-[#6f5a46]">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p>
-              Krishna Darshan for Hare Krishna Movement Organisation.
-            </p>
+            <p>Krishna Darshan for Hare Krishna Movement Organisation.</p>
             <Link href={archivePath} className="font-semibold text-[#7f3a24]">
               Browse the archive
             </Link>

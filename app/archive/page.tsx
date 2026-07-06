@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { currentIssue, archivePath } from "@/lib/newsletter-data";
+import { archivePath, currentIssue } from "@/lib/newsletter-data";
 
 export default function ArchivePage() {
   return (
@@ -12,14 +12,14 @@ export default function ArchivePage() {
                 Archive
               </p>
               <h1 className="mt-2 font-serif-display text-4xl font-semibold text-[#24150d]">
-                Previous monthly PDFs
+                Previous issues and archived PDFs
               </h1>
             </div>
             <Link
               href="/"
               className="rounded-full border border-[#d8c3a4] bg-white/80 px-4 py-2 text-sm font-semibold text-[#5e4633] transition hover:border-[#b85c38] hover:text-[#7f3a24]"
             >
-              Back to current issue
+              Back to June issue
             </Link>
           </div>
         </div>
@@ -27,27 +27,27 @@ export default function ArchivePage() {
         <section className="grid gap-4 py-8 lg:grid-cols-[0.9fr_1.1fr]">
           <article className="magazine-card-strong rounded-[2rem] p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a15b2f]">
-              Current month
+              Current issue
             </p>
             <h2 className="mt-3 font-serif-display text-4xl font-semibold text-[#24150d]">
               {currentIssue.month}
             </h2>
             <p className="mt-3 text-sm leading-7 text-[#645042]">
-              The current issue is the interactive web edition. Older issues can
-              stay as PDFs in Google Drive so the archive stays simple and free.
+              June is the live web edition. It holds stories, statistics,
+              images, and video embeds directly on the site.
             </p>
           </article>
 
           <article className="magazine-card rounded-[2rem] p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a15b2f]">
-              Suggested setup
+              Archive note
             </p>
             <h2 className="mt-3 font-serif-display text-4xl font-semibold text-[#24150d]">
-              One drive folder per issue
+              May remains as a PDF reference
             </h2>
             <p className="mt-3 text-sm leading-7 text-[#645042]">
-              If you create one Drive folder for each month, this page can link
-              directly to the PDF and keep the archive easy to maintain.
+              All earlier issues can continue as Drive PDFs, while June and
+              onward move into the interactive web format.
             </p>
             <p className="mt-4 rounded-2xl border border-[#ead9bc] bg-[#fffaf1] px-4 py-4 text-sm leading-7 text-[#5f4633]">
               Archive path: {archivePath}
@@ -55,7 +55,7 @@ export default function ArchivePage() {
           </article>
         </section>
 
-        <section className="grid gap-4 pb-10 md:grid-cols-2 xl:grid-cols-4">
+        <section className="grid gap-4 pb-10 md:grid-cols-2 xl:grid-cols-3">
           {currentIssue.archive.map((issue, index) => (
             <article
               key={issue.month}
@@ -83,7 +83,7 @@ export default function ArchivePage() {
                   href="/"
                   className="rounded-full border border-[#d8c3a4] bg-white/80 px-4 py-2 text-sm font-semibold text-[#5e4633] transition hover:border-[#b85c38] hover:text-[#7f3a24]"
                 >
-                  View current
+                  View June
                 </Link>
               </div>
             </article>
