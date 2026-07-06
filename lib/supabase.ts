@@ -5,7 +5,11 @@ function getSupabaseConfig() {
   const anonKey = process.env.SUPABASE_ANON_KEY;
 
   if (!url || !anonKey) {
-    return null;
+    return {
+      url,
+      anonKey,
+      error: "Missing SUPABASE_URL or SUPABASE_ANON_KEY.",
+    };
   }
 
   return { url, anonKey };
@@ -18,8 +22,8 @@ async function supabaseSelect<T extends SupabaseRow>(
 ) {
   const config = getSupabaseConfig();
 
-  if (!config) {
-    return null;
+  if (!config.url || !config.anonKey) {
+    throw new Error(config.error ?? "Missing Supabase configuration.");
   }
 
   const searchParams = new URLSearchParams();

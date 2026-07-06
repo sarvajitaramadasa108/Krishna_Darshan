@@ -198,11 +198,12 @@ export async function loadMagazineIssue(): Promise<MagazineIssueResult> {
       source: "supabase",
       note: `Loaded ${events.length} event(s) from Supabase.`,
     };
-  } catch {
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown Supabase error.";
     return {
       ...currentIssue,
       source: "template",
-      note: "Supabase read failed, so the template fallback is showing.",
+      note: message,
     };
   }
 }
