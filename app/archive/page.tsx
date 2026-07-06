@@ -1,7 +1,12 @@
 import Link from "next/link";
-import { archivePath, currentIssue } from "@/lib/newsletter-data";
+import { archivePath } from "@/lib/newsletter-data";
+import { loadMagazineIssue } from "@/lib/magazine-data";
 
-export default function ArchivePage() {
+export const dynamic = "force-dynamic";
+
+export default async function ArchivePage() {
+  const currentIssue = await loadMagazineIssue();
+
   return (
     <main className="magazine-shell">
       <div className="mx-auto min-h-screen max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
@@ -45,10 +50,10 @@ export default function ArchivePage() {
             <h2 className="mt-3 font-serif-display text-4xl font-semibold text-[#24150d]">
               May remains as a PDF reference
             </h2>
-            <p className="mt-3 text-sm leading-7 text-[#645042]">
-              All earlier issues can continue as Drive PDFs, while June and
-              onward move into the interactive web format.
-            </p>
+              <p className="mt-3 text-sm leading-7 text-[#645042]">
+                All earlier issues can continue as Drive PDFs, while June and
+                onward move into the interactive web format.
+              </p>
             <p className="mt-4 rounded-2xl border border-[#ead9bc] bg-[#fffaf1] px-4 py-4 text-sm leading-7 text-[#5f4633]">
               Archive path: {archivePath}
             </p>

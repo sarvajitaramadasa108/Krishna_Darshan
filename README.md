@@ -45,9 +45,11 @@ Use Supabase when you are ready to move from placeholders to stored content:
 1. Create a bucket named `krishna-darshan` inside Supabase Storage.
 2. Keep the bucket public so the magazine page can load images directly.
 3. Run the SQL in `supabase/schema.sql` in the Supabase SQL editor.
-4. Add `SUPABASE_URL` and `SUPABASE_ANON_KEY` to Vercel environment
+4. Run `supabase/seed-june.sql` to create the first June issue and sample
+   event rows.
+5. Add `SUPABASE_URL` and `SUPABASE_ANON_KEY` to Vercel environment
    variables.
-5. Later, move issue text and image URLs from `lib/newsletter-data.ts` into
+6. Later, move issue text and image URLs from `lib/newsletter-data.ts` into
    the database tables.
 
 ## Current note

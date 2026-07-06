@@ -2,12 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   archivePath,
-  currentIssue,
   issueNavigation,
   youtubeEmbedUrl,
 } from "@/lib/newsletter-data";
+import { loadMagazineIssue } from "@/lib/magazine-data";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const currentIssue = await loadMagazineIssue();
+
   return (
     <main className="magazine-shell">
       <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 pb-16 pt-4 sm:px-6 lg:px-8">
@@ -432,7 +436,7 @@ export default function Home() {
               </p>
               <p className="mt-4 rounded-2xl border border-[#ead9bc] bg-[#fffaf1] px-4 py-4 text-sm leading-7 text-[#5f4633]">
                 Next step: send the real June event details, photo links, and
-                videos, and I’ll swap the placeholders into a publish-ready
+                videos, and I&apos;ll swap the placeholders into a publish-ready
                 issue page.
               </p>
             </article>
