@@ -40,6 +40,18 @@ type EventImageRow = {
   order_index: number;
 };
 
+export type MagazineEvent = {
+  id: number;
+  anchorId: string;
+  title: string;
+  date: string;
+  type: string;
+  summary: string;
+  stats: Array<{ label: string; value: string }>;
+  images: Array<{ url: string; caption: string }>;
+  videoUrl?: string | null;
+};
+
 function videoIdFromUrl(url: string | null) {
   if (!url) {
     return null;
@@ -67,6 +79,7 @@ export type MagazineIssueData = typeof currentIssue;
 export type MagazineIssueResult = MagazineIssueData & {
   source: "supabase" | "template";
   note: string;
+  events: MagazineEvent[];
 };
 
 export async function loadMagazineIssue(): Promise<MagazineIssueResult> {
@@ -84,6 +97,7 @@ export async function loadMagazineIssue(): Promise<MagazineIssueResult> {
         ...currentIssue,
         source: "template",
         note: "No Supabase issue rows were found.",
+        events: [],
       };
     }
 
@@ -104,8 +118,7 @@ export async function loadMagazineIssue(): Promise<MagazineIssueResult> {
       imagesByEvent.set(image.event_id, list);
     }
 
-    const storyCards: StoryCard[] =
-      events.slice(0, 3).map((event, index) => ({
+    const storyCards: StoryCard[] = events.slice(0, 3).map((event, index) => ({
         eyebrow: event.event_type ?? `Story ${index + 1}`,
         title: event.title,
         body: event.summary,
@@ -113,7 +126,26 @@ export async function loadMagazineIssue(): Promise<MagazineIssueResult> {
           event.stats?.map((stat) => `${stat.label ?? "Stat"}: ${stat.value ?? ""}`).join(" | ") ||
           "Add stats for this story in Supabase.",
         metrics: event.stats?.map((stat) => stat.label ?? "Stat") || [],
-      })) ?? currentIssue.storyCards;
+      }));
+
+    const detailedEvents: MagazineEvent[] = events.map((event, index) => ({
+      id: event.id,
+      anchorId: `event-${event.id}`,
+      title: event.title,
+      date: event.event_date ?? issue.month,
+      type: event.event_type ?? `Event ${index + 1}`,
+      summary: event.summary,
+      stats:
+        event.stats?.map((stat, statIndex) => ({
+          label: stat.label ?? `Stat ${statIndex + 1}`,
+          value: stat.value ?? "",
+        })) ?? [],
+      images: (imagesByEvent.get(event.id) ?? []).map((image) => ({
+        url: image.image_url,
+        caption: image.caption ?? event.summary,
+      })),
+      videoUrl: event.video_url,
+    }));
 
     const gallery: GalleryItem[] = [];
     for (const event of events) {
@@ -195,6 +227,7 @@ export async function loadMagazineIssue(): Promise<MagazineIssueResult> {
       videos: videos.length ? videos : currentIssue.videos,
       upcoming: upcoming.length ? upcoming : currentIssue.upcoming,
       archive: archive.length ? archive : currentIssue.archive,
+      events: detailedEvents,
       source: "supabase",
       note: `Loaded ${events.length} event(s) from Supabase.`,
     };
@@ -204,6 +237,7 @@ export async function loadMagazineIssue(): Promise<MagazineIssueResult> {
       ...currentIssue,
       source: "template",
       note: message,
+      events: [],
     };
   }
 }
