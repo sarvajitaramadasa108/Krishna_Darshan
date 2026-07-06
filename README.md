@@ -28,6 +28,8 @@ This first version is intentionally free to run:
 - `public/` stores the lightweight cover and gallery illustrations
 - `app/page.tsx` renders the current issue
 - `app/archive/page.tsx` renders the PDF archive
+- `supabase/schema.sql` is the first copy-paste schema for Supabase
+- `.env.example` shows the environment variables Vercel will need later
 
 ## Monthly publishing flow
 
@@ -35,6 +37,18 @@ This first version is intentionally free to run:
 2. Replace the gallery illustrations with real temple photos if needed.
 3. Paste in the new Drive PDF URL for each older issue.
 4. Deploy the updated site to Vercel from the connected Git repository.
+
+## Supabase setup
+
+Use Supabase when you are ready to move from placeholders to stored content:
+
+1. Create a bucket named `krishna-darshan` inside Supabase Storage.
+2. Keep the bucket public so the magazine page can load images directly.
+3. Run the SQL in `supabase/schema.sql` in the Supabase SQL editor.
+4. Add `SUPABASE_URL` and `SUPABASE_ANON_KEY` to Vercel environment
+   variables.
+5. Later, move issue text and image URLs from `lib/newsletter-data.ts` into
+   the database tables.
 
 ## Current note
 
