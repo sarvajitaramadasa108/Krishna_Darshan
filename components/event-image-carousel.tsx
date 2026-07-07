@@ -11,6 +11,9 @@ export default function EventImageCarousel({
   images,
 }: EventImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [orientations, setOrientations] = useState<
+    Array<"portrait" | "landscape" | null>
+  >(() => images.map(() => null));
 
   if (!images.length) {
     return (
@@ -30,9 +33,17 @@ export default function EventImageCarousel({
     setCurrentIndex((index) => (index + 1) % total);
   };
 
+  const currentOrientation = orientations[currentIndex] ?? "landscape";
+
   return (
     <div className="relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/80 shadow-[0_18px_48px_rgba(86,48,18,0.12)]">
-      <div className="relative aspect-[16/10] overflow-hidden bg-white">
+      <div
+        className={`relative overflow-hidden bg-white ${
+          currentOrientation === "portrait"
+            ? "aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5]"
+            : "aspect-[16/10] sm:aspect-[16/9]"
+        }`}
+      >
         <div
           className="flex h-full w-full transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -44,7 +55,20 @@ export default function EventImageCarousel({
                 alt={`Event image ${index + 1}`}
                 fill
                 sizes="100vw"
-                className="object-cover"
+                className={
+                  orientations[index] === "portrait"
+                    ? "object-contain bg-white p-3 sm:p-4"
+                    : "object-cover"
+                }
+                onLoad={(event) => {
+                  const { naturalWidth, naturalHeight } = event.currentTarget;
+                  setOrientations((current) => {
+                    const next = [...current];
+                    next[index] =
+                      naturalHeight > naturalWidth ? "portrait" : "landscape";
+                    return next;
+                  });
+                }}
               />
             </div>
           ))}
