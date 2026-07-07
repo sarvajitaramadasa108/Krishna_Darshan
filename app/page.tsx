@@ -161,8 +161,6 @@ export default async function Home() {
         <section className="border-t border-[#ddc7a9] py-8">
           <div className="space-y-8">
             {currentIssue.events.map((event, index) => {
-              const videoEmbed = youtubeEmbedUrl(event.videoUrl);
-
               return (
                 <article
                   key={event.id}
@@ -173,12 +171,9 @@ export default async function Home() {
                   <div className="flex flex-col gap-5">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                       <div className="max-w-3xl">
-                      <h3 className="font-serif-display text-4xl font-semibold leading-tight text-[#1e1b4b]">
-                        {event.title}
-                      </h3>
-                        <p className="mt-4 text-justify text-base leading-8 text-[#5e4a39]">
-                          {event.summary}
-                        </p>
+                        <h3 className="font-serif-display text-4xl font-semibold leading-tight text-[#1e1b4b]">
+                          {event.title}
+                        </h3>
 
                         {event.stats.length ? (
                           <div className="mt-5 flex flex-wrap gap-2">
@@ -193,32 +188,62 @@ export default async function Home() {
                           </div>
                         ) : null}
 
-                        {event.videoUrl ? (
-                          <div className="mt-5">
-                            {videoEmbed ? (
-                              <div className="overflow-hidden rounded-[1.5rem] border border-white/70 bg-white/70 shadow-[0_16px_40px_rgba(86,48,18,0.08)]">
-                                <div className="aspect-video">
-                                  <iframe
-                                    src={videoEmbed}
-                                    title={`${event.title} video`}
-                                    className="h-full w-full"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                  />
+                        <div className="mt-6 space-y-6">
+                          {event.blocks.map((block, blockIndex) => {
+                            if (block.type === "paragraph") {
+                              return (
+                                <p
+                                  key={`${event.id}-paragraph-${blockIndex}`}
+                                  className="text-justify text-base leading-8 text-[#5e4a39]"
+                                >
+                                  {block.text}
+                                </p>
+                              );
+                            }
+
+                            if (block.type === "gallery") {
+                              return (
+                                <EventImageCarousel
+                                  key={`${event.id}-gallery-${blockIndex}`}
+                                  images={block.images}
+                                />
+                              );
+                            }
+
+                            if (block.type === "video") {
+                              const blockVideoEmbed = youtubeEmbedUrl(block.url);
+                              return (
+                                <div
+                                  key={`${event.id}-video-${blockIndex}`}
+                                  className="overflow-hidden rounded-[1.5rem] border border-white/70 bg-white/70 shadow-[0_16px_40px_rgba(86,48,18,0.08)]"
+                                >
+                                  {blockVideoEmbed ? (
+                                    <div className="aspect-video">
+                                      <iframe
+                                        src={blockVideoEmbed}
+                                        title={`${event.title} video`}
+                                        className="h-full w-full"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                      />
+                                    </div>
+                                  ) : (
+                                    <Link
+                                      href={block.url}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="inline-flex rounded-full bg-[linear-gradient(135deg,#06b6d4,#8b5cf6)] px-4 py-3 text-sm font-semibold text-white transition hover:brightness-105"
+                                    >
+                                      Watch video
+                                    </Link>
+                                  )}
                                 </div>
-                              </div>
-                            ) : (
-                              <Link
-                                href={event.videoUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="inline-flex rounded-full bg-[linear-gradient(135deg,#06b6d4,#8b5cf6)] px-4 py-3 text-sm font-semibold text-white transition hover:brightness-105"
-                              >
-                                Watch video
-                              </Link>
-                            )}
-                          </div>
-                        ) : null}
+                              );
+                            }
+
+                            return null;
+                          })}
+                        </div>
                       </div>
 
                       <Link
@@ -228,10 +253,6 @@ export default async function Home() {
                         Go to the Events
                       </Link>
                     </div>
-                  </div>
-
-                  <div className="mt-6">
-                    <EventImageCarousel images={event.images} />
                   </div>
                 </article>
               );

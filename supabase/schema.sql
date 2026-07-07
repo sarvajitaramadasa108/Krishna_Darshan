@@ -17,6 +17,7 @@ create table if not exists events (
   event_type text,
   summary text not null,
   stats jsonb not null default '[]'::jsonb,
+  content_blocks jsonb not null default '[]'::jsonb,
   video_url text,
   order_index int not null default 0
 );

@@ -28,6 +28,17 @@ type EventRow = {
   event_type: string | null;
   summary: string;
   stats: Array<{ label?: string; value?: string }> | null;
+  content_blocks:
+    | Array<
+        | {
+            type?: string;
+            text?: string;
+            images?: Array<{ url?: string; caption?: string }>;
+            url?: string;
+          }
+        | Record<string, unknown>
+      >
+    | null;
   video_url: string | null;
   order_index: number;
 };
@@ -50,7 +61,22 @@ export type MagazineEvent = {
   stats: Array<{ label: string; value: string }>;
   images: Array<{ url: string; caption: string }>;
   videoUrl?: string | null;
+  blocks: MagazineEventBlock[];
 };
+
+export type MagazineEventBlock =
+  | {
+      type: "paragraph";
+      text: string;
+    }
+  | {
+      type: "gallery";
+      images: Array<{ url: string; caption?: string }>;
+    }
+  | {
+      type: "video";
+      url: string;
+    };
 
 function videoIdFromUrl(url: string | null) {
   if (!url) {
@@ -72,6 +98,84 @@ function videoIdFromUrl(url: string | null) {
   }
 
   return null;
+}
+
+function normalizeEventBlocks(
+  event: EventRow,
+  images: Array<{ url: string; caption: string }>
+): MagazineEventBlock[] {
+  const blocks = event.content_blocks ?? [];
+
+  if (!blocks.length) {
+    const fallback: MagazineEventBlock[] = [];
+
+    if (event.summary) {
+      fallback.push({ type: "paragraph", text: event.summary });
+    }
+
+    if (images.length) {
+      fallback.push({
+        type: "gallery",
+        images: images.map((image) => ({
+          url: image.url,
+          caption: image.caption,
+        })),
+      });
+    }
+
+    if (event.video_url) {
+      fallback.push({ type: "video", url: event.video_url });
+    }
+
+    return fallback;
+  }
+
+  return blocks.flatMap((block): MagazineEventBlock[] => {
+    if (block && typeof block === "object") {
+      const blockType = "type" in block ? String(block.type ?? "") : "";
+
+      if (blockType === "paragraph" && "text" in block && block.text) {
+        return [{ type: "paragraph", text: String(block.text) }];
+      }
+
+      if (blockType === "gallery" && Array.isArray(block.images)) {
+        const galleryImages = block.images.reduce<
+          Array<{ url: string; caption?: string }>
+        >((acc, image) => {
+          if (!image || typeof image !== "object" || !("url" in image)) {
+            return acc;
+          }
+
+          const url = String(image.url ?? "");
+          if (!url) {
+            return acc;
+          }
+
+          acc.push({
+            url,
+            caption:
+              "caption" in image && image.caption
+                ? String(image.caption)
+                : undefined,
+          });
+          return acc;
+        }, []);
+
+        return [
+          {
+            type: "gallery",
+            images: galleryImages,
+          },
+        ];
+      }
+
+      if (blockType === "video" && "url" in block && block.url) {
+        return [{ type: "video", url: String(block.url) }];
+      }
+    }
+
+    return [];
+  });
 }
 
 export type MagazineIssueData = typeof currentIssue;
@@ -145,6 +249,13 @@ export async function loadMagazineIssue(): Promise<MagazineIssueResult> {
         caption: image.caption ?? event.summary,
       })),
       videoUrl: event.video_url,
+      blocks: normalizeEventBlocks(
+        event,
+        (imagesByEvent.get(event.id) ?? []).map((image) => ({
+          url: image.image_url,
+          caption: image.caption ?? event.summary,
+        }))
+      ),
     }));
 
     const gallery: GalleryItem[] = [];
