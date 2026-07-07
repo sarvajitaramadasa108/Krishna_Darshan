@@ -59,7 +59,7 @@ export default function EventImageCarousel({
             aria-label="Previous image"
             className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full border border-white/80 bg-white/90 p-3 text-[#7f3a24] shadow-[0_10px_24px_rgba(86,48,18,0.18)] transition hover:scale-105"
           >
-            <span className="text-xl leading-none">‹</span>
+            <span className="text-xl leading-none">{`<`}</span>
           </button>
           <button
             type="button"
@@ -67,7 +67,7 @@ export default function EventImageCarousel({
             aria-label="Next image"
             className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-white/80 bg-white/90 p-3 text-[#7f3a24] shadow-[0_10px_24px_rgba(86,48,18,0.18)] transition hover:scale-105"
           >
-            <span className="text-xl leading-none">›</span>
+            <span className="text-xl leading-none">{`>`}</span>
           </button>
         </>
       ) : null}

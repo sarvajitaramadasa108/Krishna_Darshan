@@ -95,9 +95,6 @@ export default async function Home() {
             <p className="text-xs font-semibold uppercase tracking-[0.34em] text-[#a15b2f]">
               Events in the month of June
             </p>
-            <h2 className="mt-2 font-serif-display text-5xl font-semibold text-[#25150d] sm:text-6xl">
-              Event pallets
-            </h2>
           </div>
 
           {currentIssue.events.length ? (
@@ -149,7 +146,7 @@ export default async function Home() {
                         href={`#${event.anchorId}`}
                         className="inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#7f3a24,#b85c38)] px-4 py-3 text-sm font-semibold text-white transition hover:brightness-105"
                       >
-                        {event.title}
+                        Click Here for more details
                       </Link>
                     </div>
                   </article>
