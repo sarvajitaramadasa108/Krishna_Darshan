@@ -137,9 +137,6 @@ export default async function Home() {
                         <h3 className="font-serif-display text-3xl font-semibold leading-tight text-[#25150d]">
                           {event.title}
                         </h3>
-                        <p className="mt-2 text-sm font-semibold text-[#7f3a24]">
-                          Click Here for more details
-                        </p>
                       </div>
 
                       <Link
